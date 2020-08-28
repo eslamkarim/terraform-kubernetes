@@ -40,6 +40,11 @@ resource "kubernetes_deployment" "jenkins" {
               mount_path = "/var/jenkins_home"
           }
         }
+        init_container {
+          name = "kubectl"
+          image = "bitnami/kubectl:latest"
+          command = ["sh","-c","kubectl proxy"]
+        }
         volume{
             name = "jenkins-storage"
             persistent_volume_claim{

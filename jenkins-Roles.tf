@@ -5,9 +5,9 @@ resource "kubernetes_role" "jenkins-dev-role" {
   }
 
   rule {
-    api_groups     = ["*"]
-    resources      = ["*"]
-    verbs          = ["*"]
+    api_groups     = [""]
+    resources      = [""]
+    verbs          = [""]
   }
 }
 
@@ -35,9 +35,9 @@ resource "kubernetes_role" "jenkins-test-role" {
   }
 
   rule {
-    api_groups     = ["*"]
-    resources      = ["*"]
-    verbs          = ["*"]
+    api_groups     = [""]
+    resources      = [""]
+    verbs          = [""]
   }
 }
 

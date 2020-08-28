@@ -6,8 +6,8 @@ resource "kubernetes_role" "jenkins-dev-role" {
 
   rule {
     api_groups     = [""]
-    resources      = [""]
-    verbs          = [""]
+    resources      = ["*"]
+    verbs          = ["get","delete","create"]
   }
 }
 

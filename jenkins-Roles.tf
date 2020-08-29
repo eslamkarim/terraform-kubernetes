@@ -5,9 +5,9 @@ resource "kubernetes_role" "jenkins-dev-role" {
   }
 
   rule {
-    api_groups     = [""]
+    api_groups     = ["*"]
     resources      = ["*"]
-    verbs          = ["get","delete","create"]
+    verbs          = ["*"]
   }
 }
 
@@ -35,9 +35,9 @@ resource "kubernetes_role" "jenkins-test-role" {
   }
 
   rule {
-    api_groups     = [""]
-    resources      = [""]
-    verbs          = [""]
+    api_groups     = ["*"]
+    resources      = ["*"]
+    verbs          = ["*"]
   }
 }
 
@@ -50,6 +50,33 @@ resource "kubernetes_role_binding" "jenkins-test-binding" {
     api_group = "rbac.authorization.k8s.io"
     kind      = "Role"
     name      = "jenkins-test-role"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "jenkins-kubectl-sa"
+    namespace = kubernetes_namespace.build-namespace.metadata[0].name
+  }
+}
+
+resource "kubernetes_role" "jenkins-ay7aga-role" {
+  metadata {
+    name = "jenkins-ay7aga-role"
+  }
+
+  rule {
+    api_groups     = ["*"]
+    resources      = ["*"]
+    verbs          = ["*"]
+  }
+}
+resource "kubernetes_role_binding" "jenkins-ay7aga-binding" {
+  metadata {
+    name      = "jenkins-ay7aga-binding"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = "jenkins-ay7aga-role"
   }
   subject {
     kind      = "ServiceAccount"

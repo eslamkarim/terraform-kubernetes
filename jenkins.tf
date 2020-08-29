@@ -25,25 +25,27 @@ resource "kubernetes_deployment" "jenkins" {
           fs_group = "1000"
         }
         container {
-          image = "jenkins/jenkins:alpine"
+          image = "eslamkarim/jenkins-ansible-kubectl:latest"
           name = "jenkins-container"
           port {
-            name = "http-port"
             container_port = 8080
+          }
+          port {
+            name = "http-port"
+            container_port = 8000
           }
           port {
             name = "jnlp-port"
             container_port = 50000
           }
+          env {
+            name = "JENKINS_OPTS"
+            value = "--httpPort=8000"
+          }
           volume_mount{
               name = "jenkins-storage"
               mount_path = "/var/jenkins_home"
           }
-        }
-        init_container {
-          name = "kubectl"
-          image = "bitnami/kubectl:latest"
-          command = ["sh","-c","kubectl proxy"]
         }
         volume{
             name = "jenkins-storage"
@@ -66,8 +68,8 @@ resource "kubernetes_service" "jenkins-svc" {
       App = kubernetes_deployment.jenkins.spec.0.template.0.metadata[0].labels.App
     }
     port {
-      port        = 8080
-      target_port = 8080
+      port        = 8000
+      target_port = 8000
     }
     type = "NodePort"
   }

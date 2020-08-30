@@ -20,7 +20,8 @@ resource "kubernetes_deployment" "jenkins" {
         }
       }
       spec {
-        service_account_name = "jenkins-kubectl-sa"
+        service_account_name = "jenkins-kubectl-sa"    
+        automount_service_account_token = "true"
         security_context {
           fs_group = "1000"
         }

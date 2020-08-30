@@ -58,9 +58,9 @@ resource "kubernetes_deployment" "jenkins" {
                 claim_name = "jenkins-claim"
             }
         }
-        volumes{ 
+        volume{ 
           name= "docker-sock" 
-          hostPath{
+          host_path{
               path = "/var/run"
           } 
         }

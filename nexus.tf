@@ -1,0 +1,64 @@
+resource "kubernetes_deployment" "nexus" {
+  metadata {
+    name = "nexus-deployment"
+    labels = {
+      App = "nexus-server"
+    }
+    namespace = kubernetes_namespace.build-namespace.metadata[0].name
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        App = "nexus-server"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          App = "nexus-server"
+        }
+      }
+      spec {
+        security_context {
+          fs_group = "1000"
+        }
+        container {
+          image = "sonatype/nexus:latest"
+          name = "nexus-container"
+          port {
+            name = "nexus-port"
+            container_port = 8081
+          }
+          volume_mount{
+              name = "nexus-storage"
+              mount_path = "/sonatype-work"
+          }
+        }
+        volume{
+            name = "nexus-storage"
+            persistent_volume_claim{
+                claim_name = "nexus-claim"
+            }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "nexus-svc" {
+  metadata {
+    name = "nexus-service"
+    namespace = kubernetes_namespace.build-namespace.metadata[0].name
+  }
+  spec {
+    selector = {
+      App = kubernetes_deployment.nexus.spec.0.template.0.metadata[0].labels.App
+    }
+    port {
+      port        = 8081
+      target_port = 8081
+    }
+    type = "NodePort"
+  }
+}

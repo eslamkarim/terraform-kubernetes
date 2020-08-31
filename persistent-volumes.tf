@@ -18,22 +18,22 @@ resource "kubernetes_persistent_volume" "jenkins-pv" {
   }
 }
 
-# resource "kubernetes_persistent_volume" "nexus-pv" {
-#   metadata {
-#     name = "nexus-pv"
-#   }
-#   spec {
-#     capacity = {
-#       storage = "1Gi"
-#     }
+resource "kubernetes_persistent_volume" "nexus-pv" {
+  metadata {
+    name = "nexus-pv"
+  }
+  spec {
+    capacity = {
+      storage = "1Gi"
+    }
     
-#     storage_class_name = "manual"
-#     access_modes = ["ReadWriteOnce"]
-#     persistent_volume_source {
-#       host_path {
-#         path = "/nexus-data"
-#         type = "DirectoryOrCreate"
-#       }
-#     }
-#   }
-# }
+    storage_class_name = "manual"
+    access_modes = ["ReadWriteOnce"]
+    persistent_volume_source {
+      host_path {
+        path = "/nexus-data"
+        type = "DirectoryOrCreate"
+      }
+    }
+  }
+}

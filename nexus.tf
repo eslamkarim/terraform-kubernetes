@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "nexus" {
           }
           volume_mount{
               name = "nexus-storage"
-              mount_path = "/sonatype-work"
+              mount_path = "/nexus-data"
           }
         }
         volume{
